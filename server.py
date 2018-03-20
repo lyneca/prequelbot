@@ -2,6 +2,10 @@ from flask import Flask, request
 import json
 import requests
 
+app = Flask(__name__)
+
+PAT = ''
+
 @app.route('/', methods=['GET'])
 def handle_verification():
     print("Handling verification...")
