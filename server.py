@@ -43,6 +43,50 @@ def handle_messages():
         print("Incoming from {}: {}".format(sender, message))
     return "ok"
 
+def random_top(user):
+    r = requests.get('https://reddit.com/r/prequelmemes/top.json&sort=top&t=all', headers=reddit_headers).json()
+    post = random.choice(r['data']['children'])['data']
+    message = "{} (/u/{}, {} points)".format(post['title'], post['author'], post['score'])
+    send_message(PAT, user, message)
+    if post['url'].endswith('gif'):
+        send_link(PAT, user, post['url'])
+    else:
+        send_image(PAT, user, post['url'])
+
+def random_new(user):
+    r = requests.get('https://reddit.com/r/prequelmemes/new.json', headers=reddit_headers).json()
+    post = random.choice(r['data']['children'])['data']
+    message = "{} (/u/{}, {} points)".format(post['title'], post['author'], post['score'])
+    send_message(PAT, user, message)
+    if post['url'].endswith('gif'):
+        send_link(PAT, user, post['url'])
+    else:
+        send_image(PAT, user, post['url'])
+        
+def newest(user):
+    r = requests.get('https://reddit.com/r/prequelmemes/new.json', headers=reddit_headers).json()
+    post = r['data']['children'][0]
+    send_message(PAT, sender['id'], message)
+    if post['url'].endswith('gif'):
+        send_link(PAT, sender['id'], post['url'])
+    else:
+        send_image(PAT, sender['id'], post['url'])
+
+def quote(message, user):
+    if 'phantom' in message.lower():
+        send_message(PAT, sender['id'], random.choice(phantom_text))
+    elif 'clones' in message.lower():
+        send_message(PAT, sender['id'], random.choice(clones_text))
+    elif 'sith' in message.lower():
+        send_message(PAT, sender['id'], random.choice(sith_text))
+    elif 'hope' in message.lower():
+        send_message(PAT, sender['id'], random.choice(hope_text))
+    elif 'empire' in message.lower():
+        send_message(PAT, sender['id'], random.choice(empire_text))
+    elif 'jedi' in message.lower():
+        send_message(PAT, sender['id'], random.choice(jedi_text))
+
+
 def messaging_events(payload):
     """
     Generate types of (sender_id, message_text) from the provided payload.
@@ -55,45 +99,23 @@ def messaging_events(payload):
             message = event['message']['text']
             if 'random' in message.lower():
                 if 'top' in message.lower():
-                    r = requests.get('https://reddit.com/r/prequelmemes/top.json&sort=top&t=all', headers=reddit_headers).json()
+                    random_top(sender['id'])
                 else:
-                    r = requests.get('https://reddit.com/r/prequelmemes/new.json', headers=reddit_headers).json()
-                post = random.choice(r['data']['children'])['data']
-                message = "{} (/u/{}, {} points)".format(post['title'], post['author'], post['score'])
-                send_message(PAT, sender['id'], message)
-                if post['url'].endswith('gif'):
-                    send_link(PAT, sender['id'], post['url'])
-                else:
-                    send_image(PAT, sender['id'], post['url'])
+                    random_new(sender['id'])
                 yield sender["id"], post['title']
             elif 'newest' in message.lower():
-                r = requests.get('https://reddit.com/r/prequelmemes/new.json', headers=reddit_headers).json()
-                post = r['data']['children'][0]
-                send_message(PAT, sender['id'], message)
-                if post['url'].endswith('gif'):
-                    send_link(PAT, sender['id'], post['url'])
-                else:
-                    send_image(PAT, sender['id'], post['url'])
+                newest(sender['id'])
                 yield event["sender"]["id"], event["message"]["text"]
             elif 'quote' in message.lower():
-                if 'phantom' in message.lower():
-                    send_message(PAT, sender['id'], random.choice(phantom_text))
-                elif 'clones' in message.lower():
-                    send_message(PAT, sender['id'], random.choice(clones_text))
-                elif 'sith' in message.lower():
-                    send_message(PAT, sender['id'], random.choice(sith_text))
-                elif 'hope' in message.lower():
-                    send_message(PAT, sender['id'], random.choice(hope_text))
-                elif 'empire' in message.lower():
-                    send_message(PAT, sender['id'], random.choice(empire_text))
-                elif 'jedi' in message.lower():
-                    send_message(PAT, sender['id'], random.choice(jedi_text))
+                quote(message, sender['id'])
             elif 'help' in message.lower():
                 messages = [
+                    'Command list:'
                     'random new: Get a random post from the newest 25 posts in r/PrequelMemes',
                     'random top: Get a random post from the top 25 posts in r/PrequelMemes',
                     'newest: Get the newest post from r/PrequelMemes',
-                    'quote [phantom|clones|sith|hope|empire|jedi]: get a random quote from the script of a star wars movie'
+                    'quote [phantom, clones, sith, hope, empire, jedi]: get a random quote from the script of a star wars movie'
+                    'All commands are not case-sensitive, and each word of the command is able to be used anywhere in the sentence.'
                 ]
                 for message in messages:
                     send_message(PAT, sender['id'], message)
