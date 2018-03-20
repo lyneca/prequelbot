@@ -48,7 +48,10 @@ def messaging_events(payload):
                 post = random.choice(r['data']['children'])['data']
                 message = "{} (/u/{}, {} points)".format(post['title'], post['author'], post['score'])
                 send_message(PAT, sender['id'], message)
-                send_image(PAT, sender['id'], post['url'])
+                if post['url'].endswith('gif'):
+                    send_link(PAT, sender['id'], post['url'])
+                else:
+                    send_image(PAT, sender['id'], post['url'])
                 yield sender["id"], post['title']
             elif 'newest' in message.lower():
                 r = requests.get('https://reddit.com/r/prequelmemes/new.json', headers=reddit_headers).json()
@@ -78,6 +81,30 @@ def send_message(token, recipient, text):
         print(r.text)
 
 def send_image(token, recipient, link):
+    """
+    Send the image url to recipient with id `recipient`
+    """
+
+    r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+        params={"access_token": token},
+        data=json.dumps({
+            "recipient": {"id": recipient},
+            "message": {
+                "attachment": {
+                    "type": "image",
+                    "payload": {
+                        "url": link,
+                        "is_reusable": True
+                    }
+                }
+            }
+        }),
+        headers={"Content-Type": "application/json"}
+    )
+    if r.status_code != requests.codes.ok:
+        print(r.text)
+
+def send_link(token, recipient, link):
     """
     Send the image url to recipient with id `recipient`
     """
