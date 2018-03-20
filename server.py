@@ -39,7 +39,7 @@ def handle_messages():
     print("Handling messages...")
     payload = request.get_data()
     print(payload)
-    messaging_events(payload):
+    messaging_events(payload)
     return "ok"
 
 def random_top(user):
