@@ -110,7 +110,7 @@ def messaging_events(payload):
                 quote(message, sender['id'])
             elif 'help' in message.lower():
                 messages = [
-                    'Command list:'
+                    'Command list:',
                     'random new: Get a random post from the newest 25 posts in r/PrequelMemes',
                     'random top: Get a random post from the top 25 posts in r/PrequelMemes',
                     'newest: Get the newest post from r/PrequelMemes',
@@ -119,7 +119,6 @@ def messaging_events(payload):
                 ]
                 for message in messages:
                     send_message(PAT, sender['id'], message)
-
         else:
             ...
             #  yield event["sender"]["id"], "I can't echo this"
