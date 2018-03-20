@@ -74,17 +74,17 @@ def newest(user):
 
 def quote(message, user):
     if 'phantom' in message.lower():
-        send_message(PAT, sender['id'], random.choice(phantom_text))
+        send_message(PAT, user, random.choice(phantom_text))
     elif 'clones' in message.lower():
-        send_message(PAT, sender['id'], random.choice(clones_text))
+        send_message(PAT, user, random.choice(clones_text))
     elif 'sith' in message.lower():
-        send_message(PAT, sender['id'], random.choice(sith_text))
+        send_message(PAT, user, random.choice(sith_text))
     elif 'hope' in message.lower():
-        send_message(PAT, sender['id'], random.choice(hope_text))
+        send_message(PAT, user, random.choice(hope_text))
     elif 'empire' in message.lower():
-        send_message(PAT, sender['id'], random.choice(empire_text))
+        send_message(PAT, user, random.choice(empire_text))
     elif 'jedi' in message.lower():
-        send_message(PAT, sender['id'], random.choice(jedi_text))
+        send_message(PAT, user, random.choice(jedi_text))
 
 
 def messaging_events(payload):
