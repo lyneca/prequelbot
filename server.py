@@ -37,6 +37,7 @@ def messaging_events(payload):
     data = json.loads(payload)
     messaging_events = data["entry"][0]["messaging"]
     for event in messaging_events:
+        sender = event['sender']
         if "message" in event and "text" in event["message"]:
             message = event['message']['text']
             if 'random' in message.lower():
@@ -45,9 +46,9 @@ def messaging_events(payload):
                 else:
                     r = requests.get('https://reddit.com/r/prequelmemes/new.json', headers=reddit_headers).json()
                 post = random.choice(r['data']['children'])['data']
-                send_message(PAT, sender, post['title'], post['url'])
-                send_image(PAT, sender, post['url'])
-                yield event["sender"]["id"], post['title']
+                send_message(PAT, sender['id'], post['title'], post['url'])
+                send_image(PAT, sender['id'], post['url'])
+                yield sender["id"], post['title']
             elif 'newest' in message.lower():
                 r = requests.get('https://reddit.com/r/prequelmemes/new.json', headers=reddit_headers).json()
                 post = r['data']['children'][0]
