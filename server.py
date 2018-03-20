@@ -12,17 +12,17 @@ reddit_headers = {
     'User-Agent': 'facebook:prequelmemesbot:v1.0.0 (by /u/lyneca)'
 }
 
-with open("phantom_menace") as f:
+with open("star_wars/phantom_menace") as f:
     phantom_text = f.read().split('\n')
-with open("attack_of_the_clones") as f:
+with open("star_wars/attack_of_the_clones") as f:
     clones_text = f.read().split('\n')
-with open("empire_strikes_back") as f:
+with open("star_wars/empire_strikes_back") as f:
     empire_text = f.read().split('\n')
-with open("new_hope") as f:
+with open("star_wars/new_hope") as f:
     hope_text = f.read().split('\n')
-with open("return_of_the_jedi") as f:
+with open("star_wars/return_of_the_jedi") as f:
     jedi_text = f.read().split('\n')
-with open("revenge_of_sith") as f:
+with open("star_wars/revenge_of_sith") as f:
     sith_text = f.read().split('\n')
 
 @app.route('/webhook', methods=['GET'])
