@@ -1,6 +1,6 @@
-pip==9.0.2
-setuptools==28.8.0
+click==6.7
 Flask==0.12.2
-gunicorn==19.7.1
-requests==2.18.4
-itsdangerous==0.21
+itsdangerous==0.24
+Jinja2==2.10
+MarkupSafe==1.0
+Werkzeug==0.14.1
