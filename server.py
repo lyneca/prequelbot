@@ -12,6 +12,19 @@ reddit_headers = {
     'User-Agent': 'facebook:prequelmemesbot:v1.0.0 (by /u/lyneca)'
 }
 
+with open("phantom_menace") as f:
+    phantom_text = f.read().split('\n')
+with open("attack_of_the_clones") as f:
+    clones_text = f.read().split('\n')
+with open("empire_strikes_back") as f:
+    empire_text = f.read().split('\n')
+with open("new_hope") as f:
+    hope_text = f.read().split('\n')
+with open("return_of_the_jedi") as f:
+    jedi_text = f.read().split('\n')
+with open("revenge_of_sith") as f:
+    sith_text = f.read().split('\n')
+
 @app.route('/webhook', methods=['GET'])
 def handle_verification():
     print("Handling verification...")
@@ -62,6 +75,20 @@ def messaging_events(payload):
                 else:
                     send_image(PAT, sender['id'], post['url'])
                 yield event["sender"]["id"], event["message"]["text"]
+            elif 'quote' in message.lower():
+                if 'phantom' in message.lower():
+                    send_message(PAT, sender['id'], random.choice(phantom_text))
+                elif 'clones' in message.lower():
+                    send_message(PAT, sender['id'], random.choice(clones_text))
+                elif 'sith' in message.lower():
+                    send_message(PAT, sender['id'], random.choice(sith_text))
+                elif 'hope' in message.lower():
+                    send_message(PAT, sender['id'], random.choice(hope_text))
+                elif 'empire' in message.lower():
+                    send_message(PAT, sender['id'], random.choice(empire_text))
+                elif 'jedi' in message.lower():
+                    send_message(PAT, sender['id'], random.choice(jedi_text))
+
         else:
             ...
             #  yield event["sender"]["id"], "I can't echo this"
@@ -136,4 +163,3 @@ def send_link(token, recipient, link):
     )
     if r.status_code != requests.codes.ok:
         print(r.text)
-
