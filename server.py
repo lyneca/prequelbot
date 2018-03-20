@@ -88,10 +88,14 @@ def send_image(token, recipient, link):
             "recipient": {"id": recipient},
             "message": {
                 "attachment": {
-                    "type": "image",
+                    "type": "template",
                     "payload": {
-                        "url": link,
-                        "is_reusable": True
+                        "template_type": "open_graph",
+                        "elements": [
+                            {
+                                "url": link
+                            }
+                        ]
                     }
                 }
             }
