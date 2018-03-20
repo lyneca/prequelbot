@@ -8,7 +8,7 @@ app = Flask(__name__)
 PAT = os.environ.get('MESSENGER_PAGE_ACCESS_TOKEN')
 MVT = os.environ.get('MESSENGER_VALIDATION_TOKEN')
 
-@app.route('/', methods=['GET'])
+@app.route('/webhook', methods=['GET'])
 def handle_verification():
     print("Handling verification...")
     if request.args.get('hub.verify_token', '') == MVT:
@@ -17,7 +17,7 @@ def handle_verification():
         print("Verification failed!")
         return "Error, wrong validation token"
 
-@app.route('/', methods=['POST'])
+@app.route('/webook', methods=['POST'])
 def handle_messages():
     print("Handling messages...")
     payload = request.get_data()
