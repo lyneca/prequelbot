@@ -1,15 +1,17 @@
 from flask import Flask, request
 import json
 import requests
+import os
 
 app = Flask(__name__)
 
-PAT = ''
+PAT = os.environ.get('MESSENGER_PAGE_ACCESS_TOKEN')
+MVT = os.environ.get('MESSENGER_VALIDATION_TOKEN')
 
 @app.route('/', methods=['GET'])
 def handle_verification():
     print("Handling verification...")
-    if request.args.get('hub.verify_token', '') == 'token':
+    if request.args.get('hub.verify_token', '') == MVT:
         return request.args.get('hub.challenge', '')
     else:
         print("Verification failed!")
