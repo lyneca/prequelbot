@@ -3,3 +3,4 @@ setuptools==28.8.0
 Flask==0.12.2
 gunicorn==19.7.1
 requests==2.18.4
+itsdangerous==0.21
