@@ -66,11 +66,11 @@ def random_new(user):
 def newest(user):
     r = requests.get('https://reddit.com/r/prequelmemes/new.json', headers=reddit_headers).json()
     post = r['data']['children'][0]
-    send_message(PAT, sender['id'], message)
+    send_message(PAT, user, message)
     if post['url'].endswith('gif'):
-        send_link(PAT, sender['id'], post['url'])
+        send_link(PAT, user, post['url'])
     else:
-        send_image(PAT, sender['id'], post['url'])
+        send_image(PAT, user, post['url'])
 
 def quote(message, user):
     if 'phantom' in message.lower():
