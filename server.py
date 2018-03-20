@@ -65,7 +65,8 @@ def random_new(user):
         
 def newest(user):
     r = requests.get('https://reddit.com/r/prequelmemes/new.json', headers=reddit_headers).json()
-    post = r['data']['children'][0]
+    post = r['data']['children'][0]['data']
+    message = "{} (/u/{}, {} points)".format(post['title'], post['author'], post['score'])
     send_message(PAT, user, message)
     if post['url'].endswith('gif'):
         send_link(PAT, user, post['url'])
