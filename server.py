@@ -111,9 +111,9 @@ def messaging_events(payload):
             elif 'help' in message.lower():
                 messages = [
                     'Command list:',
-                    'random new: Get a random post from the newest 25 posts in r/PrequelMemes',
-                    'random top: Get a random post from the top 25 posts in r/PrequelMemes',
-                    'newest: Get the newest post from r/PrequelMemes',
+                    'random new: Get a random post from the newest 25 posts in /r/PrequelMemes',
+                    'random top: Get a random post from the top 25 posts in /r/PrequelMemes',
+                    'newest: Get the newest post from /r/PrequelMemes',
                     'quote [phantom, clones, sith, hope, empire, jedi]: get a random quote from the script of a star wars movie',
                     'All commands are not case-sensitive, and each word of the command is able to be used anywhere in the sentence.'
                 ]
