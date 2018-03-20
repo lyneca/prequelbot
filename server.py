@@ -26,9 +26,8 @@ def handle_messages():
     print("Handling messages...")
     payload = request.get_data()
     print(payload)
-    for sender, message, url in messaging_events(payload):
+    for sender, message in messaging_events(payload):
         print("Incoming from {}: {}".format(sender, message))
-        send_message(PAT, sender, message, url)
     return "ok"
 
 def messaging_events(payload):
@@ -46,7 +45,9 @@ def messaging_events(payload):
                 else:
                     r = requests.get('https://reddit.com/r/prequelmemes/new.json', headers=reddit_headers).json()
                 post = random.choice(r['data']['children'])['data']
-                yield event["sender"]["id"], post['title'], post['url']
+                send_message(PAT, sender, post['title'], post['url'])
+                send_image(PAT, sender, post['url'])
+                yield event["sender"]["id"], post['title']
             elif 'newest' in message.lower():
                 r = requests.get('https://reddit.com/r/prequelmemes/new.json', headers=reddit_headers).json()
                 post = r['data']['children'][0]
@@ -56,7 +57,7 @@ def messaging_events(payload):
             #  yield event["sender"]["id"], "I can't echo this"
 
 
-def send_message(token, recipient, text, link):
+def send_message(token, recipient, text):
     """
     Send the message text to recipient with id `recipient`
     """
@@ -67,6 +68,23 @@ def send_message(token, recipient, text, link):
             "recipient": {"id": recipient},
             "message": {
                 "text": text,
+            }
+        }),
+        headers={"Content-Type": "application/json"}
+    )
+    if r.status_code != requests.codes.ok:
+        print(r.text)
+
+def send_image(token, recipient, link):
+    """
+    Send the image url to recipient with id `recipient`
+    """
+
+    r = requests.post("https://graph.facebook.com/v2.6/me/messages",
+        params={"access_token": token},
+        data=json.dumps({
+            "recipient": {"id": recipient},
+            "message": {
                 "attachment": {
                     "type": "image",
                     "payload": {
