@@ -67,7 +67,7 @@ def send_message(token, recipient, text, link):
                     "type": "image",
                     "payload": {
                         "url": link,
-                        "is_reusable": True;
+                        "is_reusable": True
                     }
                 }
             }
