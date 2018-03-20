@@ -42,7 +42,7 @@ def messaging_events(payload):
             message = event['message']['text']
             if 'random' in message.lower():
                 if 'top' in message.lower():
-                    r = requests.get('https://reddit.com/r/prequelmemes/top.json', headers=reddit_headers).json()
+                    r = requests.get('https://reddit.com/r/prequelmemes/top.json&sort=top&t=all', headers=reddit_headers).json()
                 else:
                     r = requests.get('https://reddit.com/r/prequelmemes/new.json', headers=reddit_headers).json()
                 post = random.choice(r['data']['children'])['data']
@@ -56,6 +56,11 @@ def messaging_events(payload):
             elif 'newest' in message.lower():
                 r = requests.get('https://reddit.com/r/prequelmemes/new.json', headers=reddit_headers).json()
                 post = r['data']['children'][0]
+                send_message(PAT, sender['id'], message)
+                if post['url'].endswith('gif'):
+                    send_link(PAT, sender['id'], post['url'])
+                else:
+                    send_image(PAT, sender['id'], post['url'])
                 yield event["sender"]["id"], event["message"]["text"]
         else:
             ...
