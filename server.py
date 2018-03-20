@@ -62,7 +62,7 @@ def send_message(token, recipient, text, link):
         data=json.dumps({
             "recipient": {"id": recipient},
             "message": {
-                "text": text
+                "text": text,
                 "attachment": {
                     "type": "image",
                     "payload": {
