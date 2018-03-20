@@ -8,6 +8,9 @@ app = Flask(__name__)
 
 PAT = os.environ.get('MESSENGER_PAGE_ACCESS_TOKEN')
 MVT = os.environ.get('MESSENGER_VALIDATION_TOKEN')
+reddit_headers = {
+    'User-Agent': 'facebook:prequelmemesbot:v1.0.0 (by /u/lyneca)'
+}
 
 @app.route('/webhook', methods=['GET'])
 def handle_verification():
@@ -39,13 +42,13 @@ def messaging_events(payload):
             message = event['message']['text']
             if 'random' in message.lower():
                 if 'top' in message.lower():
-                    r = requests.get('https://reddit.com/r/prequelmemes/top.json').json()
+                    r = requests.get('https://reddit.com/r/prequelmemes/top.json', headers=reddit_headers).json()
                 else:
-                    r = requests.get('https://reddit.com/r/prequelmemes/new.json').json()
+                    r = requests.get('https://reddit.com/r/prequelmemes/new.json', headers=reddit_headers).json()
                 post = random.choice(r['data']['children'])['data']
-                yield event["sender"]["id"], event["message"]["text"], post['url']
+                yield event["sender"]["id"], post['title'], post['url']
             elif 'newest' in message.lower():
-                r = requests.get('https://reddit.com/r/prequelmemes/new.json').json()
+                r = requests.get('https://reddit.com/r/prequelmemes/new.json', headers=reddit_headers).json()
                 post = r['data']['children'][0]
                 yield event["sender"]["id"], event["message"]["text"]
         else:
