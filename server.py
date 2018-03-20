@@ -103,10 +103,8 @@ def messaging_events(payload):
                     random_top(sender['id'])
                 else:
                     random_new(sender['id'])
-                yield sender["id"], post['title']
             elif 'newest' in message.lower():
                 newest(sender['id'])
-                yield event["sender"]["id"], event["message"]["text"]
             elif 'quote' in message.lower():
                 quote(message, sender['id'])
             elif 'help' in message.lower():
@@ -122,7 +120,6 @@ def messaging_events(payload):
                     send_message(PAT, sender['id'], message)
         else:
             ...
-            #  yield event["sender"]["id"], "I can't echo this"
 
 
 def send_message(token, recipient, text):
