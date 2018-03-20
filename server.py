@@ -88,6 +88,15 @@ def messaging_events(payload):
                     send_message(PAT, sender['id'], random.choice(empire_text))
                 elif 'jedi' in message.lower():
                     send_message(PAT, sender['id'], random.choice(jedi_text))
+            elif 'help' in message.lower():
+                messages = [
+                    'random new: Get a random post from the newest 25 posts in r/PrequelMemes',
+                    'random top: Get a random post from the top 25 posts in r/PrequelMemes',
+                    'newest: Get the newest post from r/PrequelMemes',
+                    'quote [phantom|clones|sith|hope|empire|jedi]: get a random quote from the script of a star wars movie'
+                ]
+                for message in messages:
+                    send_message(PAT, sender['id'], message)
 
         else:
             ...
