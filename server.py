@@ -43,7 +43,10 @@ def handle_messages():
     return "ok"
 
 def random_top(user):
-    r = requests.get('https://reddit.com/r/prequelmemes/top.json&sort=top&t=all', headers=reddit_headers).json()
+    try:
+        r = requests.get('https://reddit.com/r/prequelmemes/top.json&sort=top&t=all', headers=reddit_headers).json()
+    except JSONDecodeError:
+        send_message(PAT, user, 'Sorry, there was a problem grabbing a quality meme from r/PrequelMemes.')
     post = random.choice(r['data']['children'])['data']
     message = "{} (/u/{}, {} points)".format(post['title'], post['author'], post['score'])
     send_message(PAT, user, message)
@@ -53,7 +56,10 @@ def random_top(user):
         send_image(PAT, user, post['url'])
 
 def random_new(user):
-    r = requests.get('https://reddit.com/r/prequelmemes/new.json', headers=reddit_headers).json()
+    try:
+        r = requests.get('https://reddit.com/r/prequelmemes/new.json', headers=reddit_headers).json()
+    except JSONDecodeError:
+        send_message(PAT, user, 'Sorry, there was a problem grabbing a quality meme from r/PrequelMemes.')
     post = random.choice(r['data']['children'])['data']
     message = "{} (/u/{}, {} points)".format(post['title'], post['author'], post['score'])
     send_message(PAT, user, message)
@@ -63,7 +69,10 @@ def random_new(user):
         send_image(PAT, user, post['url'])
         
 def newest(user):
-    r = requests.get('https://reddit.com/r/prequelmemes/new.json', headers=reddit_headers).json()
+    try:
+        r = requests.get('https://reddit.com/r/prequelmemes/new.json', headers=reddit_headers).json()
+    except JSONDecodeError:
+        send_message(PAT, user, 'Sorry, there was a problem grabbing a quality meme from r/PrequelMemes.')
     post = r['data']['children'][0]['data']
     message = "{} (/u/{}, {} points)".format(post['title'], post['author'], post['score'])
     send_message(PAT, user, message)
