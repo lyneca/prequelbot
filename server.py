@@ -110,7 +110,9 @@ def messaging_events(payload):
         sender = event['sender']
         if "message" in event and "text" in event["message"]:
             message = event['message']['text']
-            if 'random' in message.lower():
+            if 'hello there' in message.lower():
+                send_message(PAT, sender['id'], 'GENERAL KENOBI!')
+            elif 'random' in message.lower():
                 if 'top' in message.lower():
                     random_top(sender['id'])
                 else:
