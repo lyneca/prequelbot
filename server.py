@@ -1,11 +1,11 @@
-from flask import Flask, request
+from flask import Flask, request, send_static_file
 import json
 from json import JSONDecodeError
 import requests
 import os
 import random
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='')
 
 PAT = os.environ.get('MESSENGER_PAGE_ACCESS_TOKEN')
 MVT = os.environ.get('MESSENGER_VALIDATION_TOKEN')
@@ -25,6 +25,10 @@ with open("star_wars/return_of_the_jedi") as f:
     jedi_text = f.read().split('\n')
 with open("star_wars/revenge_of_sith") as f:
     sith_text = f.read().split('\n')
+
+@app.route('/privacy', methods=['GET'])
+def privacy():
+    return app.send_static_file('privacy.html')
 
 @app.route('/webhook', methods=['GET'])
 def handle_verification():
@@ -70,7 +74,7 @@ def random_new(user):
         send_link(PAT, user, post['url'])
     else:
         send_image(PAT, user, post['url'])
-        
+
 def newest(user):
     try:
         r = requests.get('https://reddit.com/r/prequelmemes/new.json', headers=reddit_headers).json()
