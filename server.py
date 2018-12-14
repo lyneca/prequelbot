@@ -1,11 +1,11 @@
-from flask import Flask, request, send_static_file
+from flask import Flask, request, send_file
 import json
 from json import JSONDecodeError
 import requests
 import os
 import random
 
-app = Flask(__name__, static_url_path='')
+app = Flask(__name__)
 
 PAT = os.environ.get('MESSENGER_PAGE_ACCESS_TOKEN')
 MVT = os.environ.get('MESSENGER_VALIDATION_TOKEN')
@@ -28,7 +28,7 @@ with open("star_wars/revenge_of_sith") as f:
 
 @app.route('/privacy', methods=['GET'])
 def privacy():
-    return app.send_static_file('privacy.html')
+    return app.send_file('privacy.html')
 
 @app.route('/webhook', methods=['GET'])
 def handle_verification():
