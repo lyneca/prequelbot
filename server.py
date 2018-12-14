@@ -28,7 +28,7 @@ with open("star_wars/revenge_of_sith") as f:
 
 @app.route('/privacy', methods=['GET'])
 def privacy():
-    return app.send_file('privacy.html')
+    return send_file('privacy.html')
 
 @app.route('/webhook', methods=['GET'])
 def handle_verification():
